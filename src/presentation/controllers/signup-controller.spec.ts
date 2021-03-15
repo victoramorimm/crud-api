@@ -1,4 +1,5 @@
-import { AddAccount } from '../domain/usecases/add-account'
+import { AccountReturnedByDbModel } from '../domain/models/account-returned-by-db-model'
+import { AddAccount, AddAccountModel } from '../domain/usecases/add-account'
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { ServerError } from '../errors/server-error'
@@ -19,7 +20,7 @@ const makeEmailValidatorStub = (): EmailValidator => {
 
 const makeAddAccountStub = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add(data: any): Promise<any> {
+    async add(data: AddAccountModel): Promise<AccountReturnedByDbModel> {
       const fakeAccount = {
         id: 'any_id',
         email: 'any_email@mail.com',
