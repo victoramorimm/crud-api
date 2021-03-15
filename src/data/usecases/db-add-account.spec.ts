@@ -1,6 +1,12 @@
 import { AccountReturnedByDbModel } from '../../domain/models/account-returned-by-db-model'
+import { AddAccountModel } from '../../domain/usecases/add-account'
 import { LoadAccountByEmailRepository } from '../protocols/db/load-account-by-email-repository'
 import { DbAddAccount } from './db-add-account'
+
+const makeFakeAccountData = (): AddAccountModel => ({
+  email: 'any_email@mail.com',
+  password: 'any_password'
+})
 
 const makeFakeAccountReturnedByDb = (): AccountReturnedByDbModel => ({
   id: 'any_id',
@@ -44,10 +50,7 @@ describe('DbAddAccount Usecase', () => {
       'loadByEmail'
     )
 
-    await sut.add({
-      email: 'any_email@mail.com',
-      password: 'any_password'
-    })
+    await sut.add(makeFakeAccountData())
 
     expect(loadByEmailSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
@@ -61,10 +64,7 @@ describe('DbAddAccount Usecase', () => {
         new Promise((resolve) => resolve(makeFakeAccountReturnedByDb()))
       )
 
-    const account = await sut.add({
-      email: 'any_email@mail.com',
-      password: 'any_password'
-    })
+    const account = await sut.add(makeFakeAccountData())
 
     expect(account).toBeNull()
   })
