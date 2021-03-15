@@ -6,13 +6,7 @@ const makeLoadAccountByEmailRepositoryStub = (): LoadAccountByEmailRepository =>
   class LoadAccountByEmailRepositoryStub
     implements LoadAccountByEmailRepository {
     async loadByEmail(email: string): Promise<AccountReturnedByDbModel> {
-      const fakeAccount = {
-        id: 'any_id',
-        email: 'any_email@mail.com',
-        password: 'any_password'
-      }
-
-      return await new Promise((resolve) => resolve(fakeAccount))
+      return await new Promise((resolve) => resolve(null))
     }
   }
 
