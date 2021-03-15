@@ -1,3 +1,4 @@
+import { badRequest } from '../helpers/http'
 import { HttpRequest, HttpRespose } from '../protocols'
 import { SignUpController } from './signup-controller'
 
@@ -13,8 +14,7 @@ describe('SignUp Controller', () => {
 
     const httpResponse: HttpRespose = await sut.handle(httpRequest)
 
-    expect(httpResponse.statusCode).toEqual(400)
-    expect(httpResponse.body).toBe('Missing param: email')
+    expect(httpResponse).toEqual(badRequest('Missing param: email'))
   })
 
   test('Should return 400 if no password is provided', async () => {
@@ -28,8 +28,7 @@ describe('SignUp Controller', () => {
 
     const httpResponse: HttpRespose = await sut.handle(httpRequest)
 
-    expect(httpResponse.statusCode).toEqual(400)
-    expect(httpResponse.body).toBe('Missing param: password')
+    expect(httpResponse).toEqual(badRequest('Missing param: password'))
   })
 
   test('Should return 400 if no passwordConfirmation is provided', async () => {
@@ -44,8 +43,9 @@ describe('SignUp Controller', () => {
 
     const httpResponse: HttpRespose = await sut.handle(httpRequest)
 
-    expect(httpResponse.statusCode).toEqual(400)
-    expect(httpResponse.body).toBe('Missing param: passwordConfirmation')
+    expect(httpResponse).toEqual(
+      badRequest('Missing param: passwordConfirmation')
+    )
   })
 
   test('Should return 400 if passwordConfirmation is different of the password', async () => {
@@ -61,7 +61,8 @@ describe('SignUp Controller', () => {
 
     const httpResponse: HttpRespose = await sut.handle(httpRequest)
 
-    expect(httpResponse.statusCode).toEqual(400)
-    expect(httpResponse.body).toBe('Invalid param: passwordConfirmation')
+    expect(httpResponse).toEqual(
+      badRequest('Invalid param: passwordConfirmation')
+    )
   })
 })

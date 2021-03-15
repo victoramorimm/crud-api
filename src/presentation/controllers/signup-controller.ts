@@ -1,3 +1,4 @@
+import { badRequest } from '../helpers/http'
 import { Controller, HttpRequest, HttpRespose } from '../protocols'
 
 export class SignUpController implements Controller {
@@ -16,10 +17,7 @@ export class SignUpController implements Controller {
     const { password, passwordConfirmation } = httpRequest.body
 
     if (password !== passwordConfirmation) {
-      return {
-        statusCode: 400,
-        body: 'Invalid param: passwordConfirmation'
-      }
+      return badRequest('Invalid param: passwordConfirmation')
     }
   }
 }
