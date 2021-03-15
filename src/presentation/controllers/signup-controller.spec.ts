@@ -31,4 +31,20 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toEqual(400)
     expect(httpResponse.body).toBe('Missing param: password')
   })
+
+  test('Should return 400 if no passwordConfirmation is provided', async () => {
+    const sut = new SignUpController()
+
+    const httpRequest: HttpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password'
+      }
+    }
+
+    const httpResponse: HttpRespose = await sut.handle(httpRequest)
+
+    expect(httpResponse.statusCode).toEqual(400)
+    expect(httpResponse.body).toBe('Missing param: passwordConfirmation')
+  })
 })
