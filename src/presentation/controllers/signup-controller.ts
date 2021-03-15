@@ -1,8 +1,10 @@
 import { AddAccount } from '../domain/usecases/add-account'
-import { EmailAlreadyInUseError } from '../errors/email-already-in-use-error'
-import { InvalidParamError } from '../errors/invalid-param-error'
-import { MissingParamError } from '../errors/missing-param-error'
-import { ServerError } from '../errors/server-error'
+import {
+  EmailAlreadyInUseError,
+  InvalidParamError,
+  MissingParamError,
+  ServerError
+} from '../errors'
 import { badRequest, ok, serverError } from '../helpers/http'
 import { Controller, HttpRequest, HttpRespose } from '../protocols'
 import { EmailValidator } from '../protocols/email-validator'

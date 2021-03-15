@@ -1,13 +1,14 @@
+import { SignUpController } from './signup-controller'
 import { AccountReturnedByDbModel } from '../domain/models/account-returned-by-db-model'
 import { AddAccount, AddAccountModel } from '../domain/usecases/add-account'
-import { EmailAlreadyInUseError } from '../errors/email-already-in-use-error'
-import { InvalidParamError } from '../errors/invalid-param-error'
-import { MissingParamError } from '../errors/missing-param-error'
-import { ServerError } from '../errors/server-error'
+import {
+  EmailAlreadyInUseError,
+  InvalidParamError,
+  MissingParamError,
+  ServerError
+} from '../errors'
 import { badRequest, ok, serverError } from '../helpers/http'
-import { HttpRequest, HttpRespose } from '../protocols'
-import { EmailValidator } from '../protocols/email-validator'
-import { SignUpController } from './signup-controller'
+import { HttpRequest, HttpRespose, EmailValidator } from '../protocols'
 
 const makeEmailValidatorStub = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
