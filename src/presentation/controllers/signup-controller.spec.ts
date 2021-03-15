@@ -1,3 +1,5 @@
+import { InvalidParamError } from '../errors/invalid-param-error'
+import { MissingParamError } from '../errors/missing-param-error'
 import { badRequest } from '../helpers/http'
 import { HttpRequest, HttpRespose } from '../protocols'
 import { SignUpController } from './signup-controller'
@@ -14,7 +16,7 @@ describe('SignUp Controller', () => {
 
     const httpResponse: HttpRespose = await sut.handle(httpRequest)
 
-    expect(httpResponse).toEqual(badRequest('Missing param: email'))
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('email')))
   })
 
   test('Should return 400 if no password is provided', async () => {
@@ -28,7 +30,7 @@ describe('SignUp Controller', () => {
 
     const httpResponse: HttpRespose = await sut.handle(httpRequest)
 
-    expect(httpResponse).toEqual(badRequest('Missing param: password'))
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('password')))
   })
 
   test('Should return 400 if no passwordConfirmation is provided', async () => {
@@ -44,7 +46,7 @@ describe('SignUp Controller', () => {
     const httpResponse: HttpRespose = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(
-      badRequest('Missing param: passwordConfirmation')
+      badRequest(new MissingParamError('passwordConfirmation'))
     )
   })
 
@@ -62,7 +64,7 @@ describe('SignUp Controller', () => {
     const httpResponse: HttpRespose = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(
-      badRequest('Invalid param: passwordConfirmation')
+      badRequest(new InvalidParamError('passwordConfirmation'))
     )
   })
 })
