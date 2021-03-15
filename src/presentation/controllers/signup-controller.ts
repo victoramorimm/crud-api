@@ -1,4 +1,5 @@
 import { AddAccount } from '../domain/usecases/add-account'
+import { EmailAlreadyInUseError } from '../errors/email-already-in-use-error'
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { ServerError } from '../errors/server-error'
@@ -34,10 +35,14 @@ export class SignUpController implements Controller {
         return badRequest(new InvalidParamError('email'))
       }
 
-      await this.addAccount.add({
+      const account = await this.addAccount.add({
         email,
         password
       })
+
+      if (!account) {
+        return badRequest(new EmailAlreadyInUseError())
+      }
     } catch (error) {
       return serverError(new ServerError())
     }
