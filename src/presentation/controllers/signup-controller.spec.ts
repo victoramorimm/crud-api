@@ -5,19 +5,23 @@ import { HttpRequest, HttpRespose } from '../protocols'
 import { EmailValidator } from '../protocols/email-validator'
 import { SignUpController } from './signup-controller'
 
-type SutTypes = {
-  sut: SignUpController
-  emailValidatorStub: EmailValidator
-}
-
-const makeSut = (): SutTypes => {
+const makeEmailValidatorStub = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
     validate(email: string): boolean {
       return true
     }
   }
 
-  const emailValidatorStub = new EmailValidatorStub()
+  return new EmailValidatorStub()
+}
+
+type SutTypes = {
+  sut: SignUpController
+  emailValidatorStub: EmailValidator
+}
+
+const makeSut = (): SutTypes => {
+  const emailValidatorStub = makeEmailValidatorStub()
 
   const sut = new SignUpController(emailValidatorStub)
 
