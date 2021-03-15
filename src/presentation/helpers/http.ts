@@ -1,5 +1,10 @@
 import { HttpRespose } from '../protocols'
 
+export const ok = (data: any): HttpRespose => ({
+  statusCode: 500,
+  body: data
+})
+
 export const badRequest = (error: Error): HttpRespose => ({
   statusCode: 400,
   body: error

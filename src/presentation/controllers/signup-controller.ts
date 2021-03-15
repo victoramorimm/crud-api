@@ -3,7 +3,7 @@ import { EmailAlreadyInUseError } from '../errors/email-already-in-use-error'
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { ServerError } from '../errors/server-error'
-import { badRequest, serverError } from '../helpers/http'
+import { badRequest, ok, serverError } from '../helpers/http'
 import { Controller, HttpRequest, HttpRespose } from '../protocols'
 import { EmailValidator } from '../protocols/email-validator'
 
@@ -43,6 +43,8 @@ export class SignUpController implements Controller {
       if (!account) {
         return badRequest(new EmailAlreadyInUseError())
       }
+
+      return ok(account)
     } catch (error) {
       return serverError(new ServerError())
     }
