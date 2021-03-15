@@ -1,5 +1,6 @@
 import { AccountReturnedByDbModel } from '../../domain/models/account-returned-by-db-model'
 import { AddAccountModel } from '../../domain/usecases/add-account'
+import { Hasher } from '../protocols/criptography/hasher'
 import { LoadAccountByEmailRepository } from '../protocols/db/load-account-by-email-repository'
 import { DbAddAccount } from './db-add-account'
 
@@ -25,19 +26,33 @@ const makeLoadAccountByEmailRepositoryStub = (): LoadAccountByEmailRepository =>
   return new LoadAccountByEmailRepositoryStub()
 }
 
+const makeHasherStub = (): Hasher => {
+  class HasherStub implements Hasher {
+    async hash(value: string): Promise<string> {
+      return await new Promise((resolve) => resolve('hashed_value'))
+    }
+  }
+
+  return new HasherStub()
+}
+
 type SutTypes = {
   sut: DbAddAccount
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
+  hasherStub: Hasher
 }
 
 const makeSut = (): SutTypes => {
   const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepositoryStub()
 
-  const sut = new DbAddAccount(loadAccountByEmailRepositoryStub)
+  const hasherStub = makeHasherStub()
+
+  const sut = new DbAddAccount(loadAccountByEmailRepositoryStub, hasherStub)
 
   return {
     sut,
-    loadAccountByEmailRepositoryStub
+    loadAccountByEmailRepositoryStub,
+    hasherStub
   }
 }
 
@@ -81,5 +96,15 @@ describe('DbAddAccount Usecase', () => {
     const account = sut.add(makeFakeAccountData())
 
     await expect(account).rejects.toThrow()
+  })
+
+  test('Should call Hasher with correct password', async () => {
+    const { sut, hasherStub } = makeSut()
+
+    const hashSpy = jest.spyOn(hasherStub, 'hash')
+
+    await sut.add(makeFakeAccountData())
+
+    expect(hashSpy).toHaveBeenCalledWith('any_password')
   })
 })
