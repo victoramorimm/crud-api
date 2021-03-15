@@ -1,5 +1,6 @@
 import { AccountReturnedByDbModel } from '../domain/models/account-returned-by-db-model'
 import { AddAccount, AddAccountModel } from '../domain/usecases/add-account'
+import { EmailAlreadyInUseError } from '../errors/email-already-in-use-error'
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { ServerError } from '../errors/server-error'
@@ -193,5 +194,25 @@ describe('SignUp Controller', () => {
       email: 'any_email@mail.com',
       password: 'any_password'
     })
+  })
+
+  test('Should return 400 if AddAccount returns null', async () => {
+    const { sut, addAccountStub } = makeSut()
+
+    jest
+      .spyOn(addAccountStub, 'add')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(null)))
+
+    const httpRequest: HttpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(badRequest(new EmailAlreadyInUseError()))
   })
 })
