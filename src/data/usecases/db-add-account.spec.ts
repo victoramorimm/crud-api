@@ -2,12 +2,7 @@ import { AccountReturnedByDbModel } from '../../domain/models/account-returned-b
 import { LoadAccountByEmailRepository } from '../protocols/db/load-account-by-email-repository'
 import { DbAddAccount } from './db-add-account'
 
-type SutTypes = {
-  sut: DbAddAccount
-  loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
-}
-
-const makeSut = (): SutTypes => {
+const makeLoadAccountByEmailRepositoryStub = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub
     implements LoadAccountByEmailRepository {
     async loadByEmail(email: string): Promise<AccountReturnedByDbModel> {
@@ -21,7 +16,16 @@ const makeSut = (): SutTypes => {
     }
   }
 
-  const loadAccountByEmailRepositoryStub = new LoadAccountByEmailRepositoryStub()
+  return new LoadAccountByEmailRepositoryStub()
+}
+
+type SutTypes = {
+  sut: DbAddAccount
+  loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
+}
+
+const makeSut = (): SutTypes => {
+  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepositoryStub()
 
   const sut = new DbAddAccount(loadAccountByEmailRepositoryStub)
 
