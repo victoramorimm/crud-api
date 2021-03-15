@@ -5,17 +5,31 @@ import { HttpRequest, HttpRespose } from '../protocols'
 import { EmailValidator } from '../protocols/email-validator'
 import { SignUpController } from './signup-controller'
 
+type SutTypes = {
+  sut: SignUpController
+  emailValidatorStub: EmailValidator
+}
+
+const makeSut = (): SutTypes => {
+  class EmailValidatorStub implements EmailValidator {
+    validate(email: string): boolean {
+      return true
+    }
+  }
+
+  const emailValidatorStub = new EmailValidatorStub()
+
+  const sut = new SignUpController(emailValidatorStub)
+
+  return {
+    sut,
+    emailValidatorStub
+  }
+}
+
 describe('SignUp Controller', () => {
   test('Should return 400 if no email is provided', async () => {
-    class EmailValidatorStub implements EmailValidator {
-      validate(email: string): boolean {
-        return true
-      }
-    }
-
-    const emailValidatorStub = new EmailValidatorStub()
-
-    const sut = new SignUpController(emailValidatorStub)
+    const { sut } = makeSut()
 
     const httpRequest: HttpRequest = {
       body: {
@@ -29,15 +43,7 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 400 if no password is provided', async () => {
-    class EmailValidatorStub implements EmailValidator {
-      validate(email: string): boolean {
-        return true
-      }
-    }
-
-    const emailValidatorStub = new EmailValidatorStub()
-
-    const sut = new SignUpController(emailValidatorStub)
+    const { sut } = makeSut()
 
     const httpRequest: HttpRequest = {
       body: {
@@ -51,15 +57,7 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 400 if no passwordConfirmation is provided', async () => {
-    class EmailValidatorStub implements EmailValidator {
-      validate(email: string): boolean {
-        return true
-      }
-    }
-
-    const emailValidatorStub = new EmailValidatorStub()
-
-    const sut = new SignUpController(emailValidatorStub)
+    const { sut } = makeSut()
 
     const httpRequest: HttpRequest = {
       body: {
@@ -76,15 +74,7 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 400 if passwordConfirmation is different of the password', async () => {
-    class EmailValidatorStub implements EmailValidator {
-      validate(email: string): boolean {
-        return true
-      }
-    }
-
-    const emailValidatorStub = new EmailValidatorStub()
-
-    const sut = new SignUpController(emailValidatorStub)
+    const { sut } = makeSut()
 
     const httpRequest: HttpRequest = {
       body: {
@@ -102,17 +92,9 @@ describe('SignUp Controller', () => {
   })
 
   test('Should call EmailValidator with correct email', async () => {
-    class EmailValidatorStub implements EmailValidator {
-      validate(email: string): boolean {
-        return true
-      }
-    }
-
-    const emailValidatorStub = new EmailValidatorStub()
+    const { sut, emailValidatorStub } = makeSut()
 
     const validateSpy = jest.spyOn(emailValidatorStub, 'validate')
-
-    const sut = new SignUpController(emailValidatorStub)
 
     const httpRequest: HttpRequest = {
       body: {
