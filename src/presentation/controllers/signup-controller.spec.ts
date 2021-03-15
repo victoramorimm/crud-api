@@ -4,7 +4,7 @@ import { EmailAlreadyInUseError } from '../errors/email-already-in-use-error'
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { ServerError } from '../errors/server-error'
-import { badRequest, serverError } from '../helpers/http'
+import { badRequest, ok, serverError } from '../helpers/http'
 import { HttpRequest, HttpRespose } from '../protocols'
 import { EmailValidator } from '../protocols/email-validator'
 import { SignUpController } from './signup-controller'
@@ -234,5 +234,27 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(serverError(new ServerError()))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest: HttpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    const fakeAccount = {
+      id: 'any_id',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    }
+
+    expect(httpResponse).toEqual(ok(fakeAccount))
   })
 })
