@@ -30,7 +30,7 @@ const makeLoadAccountByEmailRepositoryStub = (): LoadAccountByEmailRepository =>
 const makeHasherStub = (): Hasher => {
   class HasherStub implements Hasher {
     async hash(value: string): Promise<string> {
-      return await new Promise((resolve) => resolve('hashed_value'))
+      return await new Promise((resolve) => resolve('hashed_password'))
     }
   }
 
@@ -150,7 +150,7 @@ describe('DbAddAccount Usecase', () => {
 
     expect(loadByEmailSpy).toHaveBeenCalledWith({
       email: 'any_email@mail.com',
-      password: 'hashed_value'
+      password: 'hashed_password'
     })
   })
 
@@ -164,5 +164,13 @@ describe('DbAddAccount Usecase', () => {
     const account = sut.add(makeFakeAccountData())
 
     await expect(account).rejects.toThrow()
+  })
+
+  test('Should return an account on success', async () => {
+    const { sut } = makeSut()
+
+    const account = await sut.add(makeFakeAccountData())
+
+    expect(account).toEqual(makeFakeAccountReturnedByDb())
   })
 })
