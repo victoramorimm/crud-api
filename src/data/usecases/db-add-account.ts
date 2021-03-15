@@ -10,8 +10,12 @@ export class DbAddAccount implements AddAccount {
   async add(accountData: AddAccountModel): Promise<AccountReturnedByDbModel> {
     const { email } = accountData
 
-    await this.loadAccountByEmailRepository.loadByEmail(email)
+    const isEmailAlreadyInUse = await this.loadAccountByEmailRepository.loadByEmail(
+      email
+    )
 
-    return null
+    if (isEmailAlreadyInUse) {
+      return null
+    }
   }
 }
