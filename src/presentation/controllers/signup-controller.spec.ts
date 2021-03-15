@@ -23,16 +23,16 @@ const makeEmailValidatorStub = (): EmailValidator => {
   return new EmailValidatorStub()
 }
 
+const makeFakeAccountReturnedByDb = (): AccountReturnedByDbModel => ({
+  id: 'any_id',
+  email: 'any_email@mail.com',
+  password: 'any_password'
+})
+
 const makeAddAccountStub = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async add(data: AddAccountModel): Promise<AccountReturnedByDbModel> {
-      const fakeAccount = {
-        id: 'any_id',
-        email: 'any_email@mail.com',
-        password: 'any_password'
-      }
-
-      return fakeAccount
+      return makeFakeAccountReturnedByDb()
     }
   }
 
@@ -253,12 +253,6 @@ describe('SignUp Controller', () => {
 
     const httpResponse = await sut.handle(httpRequest)
 
-    const fakeAccount = {
-      id: 'any_id',
-      email: 'any_email@mail.com',
-      password: 'any_password'
-    }
-
-    expect(httpResponse).toEqual(ok(fakeAccount))
+    expect(httpResponse).toEqual(ok(makeFakeAccountReturnedByDb()))
   })
 })
