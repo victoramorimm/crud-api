@@ -45,4 +45,25 @@ describe('DbAddAccount Usecase', () => {
 
     expect(loadByEmailSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
+
+  test('Should return null if LoadAccountByEmailRepository returns an account', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
+
+    const fakeAccount: AccountReturnedByDbModel = {
+      id: 'any_id',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    }
+
+    jest
+      .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(fakeAccount)))
+
+    const account = await sut.add({
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
+
+    expect(account).toBeNull()
+  })
 })
