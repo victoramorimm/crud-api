@@ -40,7 +40,9 @@ const makeFakeAccountReturnedByDb = (): AccountReturnedByDbModel => ({
 const makeAddAccountStub = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async add(data: AddAccountModel): Promise<AccountReturnedByDbModel> {
-      return makeFakeAccountReturnedByDb()
+      return await new Promise((resolve) =>
+        resolve(makeFakeAccountReturnedByDb())
+      )
     }
   }
 
