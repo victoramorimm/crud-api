@@ -1,4 +1,4 @@
-import { HttpRequest } from '../protocols/http'
+import { HttpRequest, HttpRespose } from '../protocols'
 import { SignUpController } from './signup-controller'
 
 describe('SignUp Controller', () => {
@@ -11,7 +11,7 @@ describe('SignUp Controller', () => {
       }
     }
 
-    const httpResponse = await sut.handle(httpRequest)
+    const httpResponse: HttpRespose = await sut.handle(httpRequest)
 
     expect(httpResponse.statusCode).toEqual(400)
   })

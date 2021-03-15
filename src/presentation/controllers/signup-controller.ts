@@ -1,5 +1,4 @@
-import { Controller } from '../protocols/controller'
-import { HttpRequest, HttpRespose } from '../protocols/http'
+import { Controller, HttpRequest, HttpRespose } from '../protocols'
 
 export class SignUpController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpRespose> {
