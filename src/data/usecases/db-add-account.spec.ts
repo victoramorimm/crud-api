@@ -2,6 +2,12 @@ import { AccountReturnedByDbModel } from '../../domain/models/account-returned-b
 import { LoadAccountByEmailRepository } from '../protocols/db/load-account-by-email-repository'
 import { DbAddAccount } from './db-add-account'
 
+const makeFakeAccountReturnedByDb = (): AccountReturnedByDbModel => ({
+  id: 'any_id',
+  email: 'any_email@mail.com',
+  password: 'any_password'
+})
+
 const makeLoadAccountByEmailRepositoryStub = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub
     implements LoadAccountByEmailRepository {
@@ -49,15 +55,11 @@ describe('DbAddAccount Usecase', () => {
   test('Should return null if LoadAccountByEmailRepository returns an account', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut()
 
-    const fakeAccount: AccountReturnedByDbModel = {
-      id: 'any_id',
-      email: 'any_email@mail.com',
-      password: 'any_password'
-    }
-
     jest
       .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
-      .mockReturnValueOnce(new Promise((resolve) => resolve(fakeAccount)))
+      .mockReturnValueOnce(
+        new Promise((resolve) => resolve(makeFakeAccountReturnedByDb()))
+      )
 
     const account = await sut.add({
       email: 'any_email@mail.com',
