@@ -1,6 +1,9 @@
 import { SignUpController } from './signup-controller'
-import { AccountReturnedByDbModel } from '../domain/models/account-returned-by-db-model'
-import { AddAccount, AddAccountModel } from '../domain/usecases/add-account'
+import {
+  AccountReturnedByDbModel,
+  AddAccount,
+  AddAccountModel
+} from './signup-controller-protocols'
 import {
   EmailAlreadyInUseError,
   InvalidParamError,

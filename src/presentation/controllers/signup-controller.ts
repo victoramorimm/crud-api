@@ -1,4 +1,4 @@
-import { AddAccount } from '../domain/usecases/add-account'
+import { AddAccount } from './signup-controller-protocols'
 import {
   EmailAlreadyInUseError,
   InvalidParamError,
@@ -6,8 +6,12 @@ import {
   ServerError
 } from '../errors'
 import { badRequest, ok, serverError } from '../helpers/http'
-import { Controller, HttpRequest, HttpRespose } from '../protocols'
-import { EmailValidator } from '../protocols/email-validator'
+import {
+  Controller,
+  HttpRequest,
+  HttpRespose,
+  EmailValidator
+} from '../protocols'
 
 export class SignUpController implements Controller {
   constructor(
