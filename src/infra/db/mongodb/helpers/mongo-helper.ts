@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb'
+import { Collection, MongoClient } from 'mongodb'
 
 export const MongoHelper = {
   client: null as MongoClient,
@@ -18,11 +18,17 @@ export const MongoHelper = {
     this.client = null
   },
 
-  async getCollection(name: string): Promise<void> {
+  async getCollection(name: string): Promise<Collection> {
     if (!this.client?.isConnected()) {
       await this.connect(this.uri)
     }
 
     return this.client.db().collection(name)
+  },
+
+  makeAdapterForTheAccountIdReturnedByDb: (accountData: any): any => {
+    const { _id, ...accountWithoutId } = accountData
+
+    return Object.assign({}, accountWithoutId, { id: _id })
   }
 }
