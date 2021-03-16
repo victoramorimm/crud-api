@@ -44,4 +44,20 @@ describe('Account Mongo Repository', () => {
       expect(account).toBeNull()
     })
   })
+
+  describe('add()', () => {
+    test('Should return an account on add success', async () => {
+      const sut = new AccountMongoRepository()
+
+      const account = await sut.add({
+        email: 'any_email@mail.com',
+        password: 'any_password'
+      })
+
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
+      expect(account.email).toBe('any_email@mail.com')
+      expect(account.password).toBe('any_password')
+    })
+  })
 })
