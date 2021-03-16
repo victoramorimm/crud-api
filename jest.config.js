@@ -3,6 +3,7 @@ module.exports = {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts'
   ],
+  watchPathIgnorePatterns: ['globalConfig'],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
   preset: '@shelf/jest-mongodb',
