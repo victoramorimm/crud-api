@@ -2,15 +2,17 @@ import jwt from 'jsonwebtoken'
 import { JwtAdapter } from './jwt-adapter'
 
 describe('Jwt Adapter', () => {
-  test('Should call sign with correct values', async () => {
-    const secret = 'any_secret'
+  describe('sign()', () => {
+    test('Should call sign with correct values', async () => {
+      const secret = 'any_secret'
 
-    const sut = new JwtAdapter(secret)
+      const sut = new JwtAdapter(secret)
 
-    const signSpy = jest.spyOn(jwt, 'sign')
+      const signSpy = jest.spyOn(jwt, 'sign')
 
-    await sut.encrypt('any_value')
+      await sut.encrypt('any_value')
 
-    expect(signSpy).toHaveBeenCalledWith({ value: 'any_value' }, secret)
+      expect(signSpy).toHaveBeenCalledWith({ value: 'any_value' }, secret)
+    })
   })
 })
