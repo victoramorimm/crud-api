@@ -1,4 +1,3 @@
-import { AccountReturnedByDbModel } from '../../../data/models/account-returned-by-db-model'
 import {
   Authentication,
   AuthenticationModel
@@ -21,14 +20,8 @@ const makeEmailValidatorStub = (): EmailValidator => {
 
 const makeAuthenticationStub = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(data: AuthenticationModel): Promise<AccountReturnedByDbModel> {
-      const fakeAccount = {
-        id: 'any_id',
-        email: 'any_email@mail.com',
-        password: 'hashed_password'
-      }
-
-      return await new Promise((resolve) => resolve(fakeAccount))
+    async auth(data: AuthenticationModel): Promise<string> {
+      return await new Promise((resolve) => resolve('any_token'))
     }
   }
 
