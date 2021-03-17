@@ -1,6 +1,10 @@
-import { Authentication } from '../../../domain/usecases/authentication'
-import { InvalidParamError, MissingParamError, ServerError } from '../../errors'
-import { AuthenticationError } from '../../errors/authentication-error'
+import { Authentication } from './login-controller-protocols'
+import {
+  InvalidParamError,
+  MissingParamError,
+  ServerError,
+  AuthenticationError
+} from '../../errors'
 import { badRequest, ok, serverError, unauthorized } from '../../helpers/http'
 import {
   Controller,
