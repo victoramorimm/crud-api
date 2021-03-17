@@ -24,10 +24,14 @@ export class DbAuthentication implements Authentication {
       return null
     }
 
-    await this.hashComparer.compare({
+    const isPasswordValid = await this.hashComparer.compare({
       value: password,
       valueToCompare: account.password
     })
+
+    if (!isPasswordValid) {
+      return null
+    }
 
     const accessToken = await this.encrypter.encrypt(account.id)
 
@@ -36,6 +40,6 @@ export class DbAuthentication implements Authentication {
       id: account.id
     })
 
-    return null
+    return accessToken
   }
 }
