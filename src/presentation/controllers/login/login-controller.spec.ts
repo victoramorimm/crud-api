@@ -3,19 +3,23 @@ import { badRequest } from '../../helpers/http'
 import { EmailValidator } from '../../protocols'
 import { LoginController } from './login-controller'
 
-type SutTypes = {
-  sut: LoginController
-  emailValidatorStub: EmailValidator
-}
-
-const makeSut = (): SutTypes => {
+const makeEmailValidatorStub = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
     validate(email: string): boolean {
       return true
     }
   }
 
-  const emailValidatorStub = new EmailValidatorStub()
+  return new EmailValidatorStub()
+}
+
+type SutTypes = {
+  sut: LoginController
+  emailValidatorStub: EmailValidator
+}
+
+const makeSut = (): SutTypes => {
+  const emailValidatorStub = makeEmailValidatorStub()
 
   const sut = new LoginController(emailValidatorStub)
 
