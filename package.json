@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "sucrase-node src/main/server.ts",
-    "test": "jest --watch --silent --runInBand --passWithNoTests",
-    "test:staged": "jest --passWithNoTests"
+    "test": "jest --silent --runInBand --passWithNoTests",
+    "test:verbose": "jest --runInBand --passWithNoTests",
+    "test:unit": "npm test -- --watch -c jest-unit-config.js",
+    "test:integration": "npm test -- --watch -c jest-integration-config.js",
+    "test:staged": "npm test -- --findRelatedTests",
+    "test:ci": "npm test -- --coverage"
   },
   "repository": {
     "type": "git",
