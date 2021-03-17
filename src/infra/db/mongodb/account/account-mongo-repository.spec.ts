@@ -11,6 +11,10 @@ const makeInsertAccountOnInMemoryDb = async (): Promise<any> => {
   })
 }
 
+const makeSut = (): AccountMongoRepository => {
+  return new AccountMongoRepository()
+}
+
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -28,7 +32,7 @@ describe('Account Mongo Repository', () => {
 
   describe('loadByEmail()', () => {
     test('Should return an account on loadByEmail success', async () => {
-      const sut = new AccountMongoRepository()
+      const sut = makeSut()
 
       await makeInsertAccountOnInMemoryDb()
 
@@ -41,7 +45,7 @@ describe('Account Mongo Repository', () => {
     })
 
     test('Should return null if loadByEmail fails', async () => {
-      const sut = new AccountMongoRepository()
+      const sut = makeSut()
 
       const account = await sut.loadByEmail('any_email@mail.com')
 
@@ -51,7 +55,7 @@ describe('Account Mongo Repository', () => {
 
   describe('add()', () => {
     test('Should return an account on add success', async () => {
-      const sut = new AccountMongoRepository()
+      const sut = makeSut()
 
       const account = await sut.add({
         email: 'any_email@mail.com',
@@ -67,7 +71,7 @@ describe('Account Mongo Repository', () => {
 
   describe('updateAccessToken()', () => {
     test('Should update the account accessToken on updateAccessToken success', async () => {
-      const sut = new AccountMongoRepository()
+      const sut = makeSut()
 
       const result = await makeInsertAccountOnInMemoryDb()
 
