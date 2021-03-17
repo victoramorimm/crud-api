@@ -25,7 +25,7 @@ describe('Account Mongo Repository', () => {
 
       await accountCollection.insertOne({
         email: 'any_email@mail.com',
-        password: 'any_password'
+        password: 'hashed_password'
       })
 
       const account = await sut.loadByEmail('any_email@mail.com')
@@ -33,7 +33,7 @@ describe('Account Mongo Repository', () => {
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
       expect(account.email).toBe('any_email@mail.com')
-      expect(account.password).toBe('any_password')
+      expect(account.password).toBe('hashed_password')
     })
 
     test('Should return null if loadByEmail fails', async () => {
@@ -51,13 +51,13 @@ describe('Account Mongo Repository', () => {
 
       const account = await sut.add({
         email: 'any_email@mail.com',
-        password: 'any_password'
+        password: 'hashed_password'
       })
 
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
       expect(account.email).toBe('any_email@mail.com')
-      expect(account.password).toBe('any_password')
+      expect(account.password).toBe('hashed_password')
     })
   })
 })

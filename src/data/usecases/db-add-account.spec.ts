@@ -146,11 +146,11 @@ describe('DbAddAccount Usecase', () => {
   test('Should call AddAccountRepository with correct values', async () => {
     const { sut, addAccountRepositoryStub } = makeSut()
 
-    const loadByEmailSpy = jest.spyOn(addAccountRepositoryStub, 'add')
+    const addSpy = jest.spyOn(addAccountRepositoryStub, 'add')
 
     await sut.add(makeFakeAccountData())
 
-    expect(loadByEmailSpy).toHaveBeenCalledWith({
+    expect(addSpy).toHaveBeenCalledWith({
       email: 'any_email@mail.com',
       password: 'hashed_password'
     })
@@ -173,6 +173,10 @@ describe('DbAddAccount Usecase', () => {
 
     const account = await sut.add(makeFakeAccountData())
 
-    expect(account).toEqual(makeFakeAccountReturnedByDb())
+    expect(account).toEqual({
+      id: 'any_id',
+      email: 'any_email@mail.com',
+      password: 'hashed_password'
+    })
   })
 })

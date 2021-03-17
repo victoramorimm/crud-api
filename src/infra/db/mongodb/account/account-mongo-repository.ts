@@ -11,14 +11,10 @@ export class AccountMongoRepository
   async loadByEmail(email: string): Promise<AccountReturnedByDbModel> {
     const accountCollection = await MongoHelper.getCollection('accounts')
 
-    const accountReturnedByDb = await accountCollection.findOne({ email })
+    const account = await accountCollection.findOne({ email })
 
-    if (accountReturnedByDb) {
-      const account = await MongoHelper.makeAdapterForTheAccountIdReturnedByDb(
-        accountReturnedByDb
-      )
-
-      return account
+    if (account) {
+      return MongoHelper.makeAdapterForTheAccountIdReturnedByDb(account)
     }
 
     return null
@@ -29,12 +25,8 @@ export class AccountMongoRepository
 
     const result = await accountCollection.insertOne(accountData)
 
-    const accountReturnedByDb = result.ops[0]
+    const account = result.ops[0]
 
-    const account = await MongoHelper.makeAdapterForTheAccountIdReturnedByDb(
-      accountReturnedByDb
-    )
-
-    return account
+    return MongoHelper.makeAdapterForTheAccountIdReturnedByDb(account)
   }
 }
