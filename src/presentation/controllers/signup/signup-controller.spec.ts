@@ -9,9 +9,9 @@ import {
   InvalidParamError,
   MissingParamError,
   ServerError
-} from '../errors'
-import { badRequest, ok, serverError } from '../helpers/http'
-import { HttpRequest, HttpRespose, EmailValidator } from '../protocols'
+} from '../../errors'
+import { badRequest, ok, serverError } from '../../helpers/http'
+import { HttpRequest, HttpRespose, EmailValidator } from '../../protocols'
 
 const makeFakeHttpRequest = (): HttpRequest => ({
   body: {
