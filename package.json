@@ -1,12 +1,16 @@
 {
   "name": "crud-ts-api",
-  "version": "0.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "sucrase-node src/main/server.ts",
-    "test": "jest --watch --silent --runInBand --passWithNoTests",
-    "test:staged": "jest --passWithNoTests"
+    "test": "jest --silent --runInBand --passWithNoTests",
+    "test:verbose": "jest --runInBand --passWithNoTests",
+    "test:unit": "npm test -- --watch -c jest-unit-config.js",
+    "test:integration": "npm test -- --watch -c jest-integration-config.js",
+    "test:staged": "npm test -- --findRelatedTests",
+    "test:ci": "npm test -- --coverage"
   },
   "repository": {
     "type": "git",
@@ -24,6 +28,7 @@
     "@types/bcrypt": "^3.0.0",
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.20",
+    "@types/jsonwebtoken": "^8.5.1",
     "@types/mongodb": "^3.6.10",
     "@types/node": "^14.14.34",
     "@types/supertest": "^2.0.10",
@@ -47,6 +52,7 @@
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "fast-glob": "^3.2.5",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.4",
     "validator": "^13.5.2"
   }
