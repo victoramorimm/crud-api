@@ -1,3 +1,4 @@
+import { AuthenticationModel } from '../../../domain/usecases/authentication'
 import {
   AccountReturnedByDbModel,
   LoadAccountByEmailRepository
@@ -8,6 +9,11 @@ const makeFakeAccountReturnedByDb = (): AccountReturnedByDbModel => ({
   id: 'any_id',
   email: 'any_email@mail.com',
   password: 'hashed_password'
+})
+
+const makeFakeAuthenticationData = (): AuthenticationModel => ({
+  email: 'any_email@mail.com',
+  password: 'any_password'
 })
 
 type SutTypes = {
@@ -44,10 +50,7 @@ describe('DbAuthentication Usecase', () => {
       'loadByEmail'
     )
 
-    await sut.auth({
-      email: 'any_email@mail.com',
-      password: 'any_password'
-    })
+    await sut.auth(makeFakeAuthenticationData())
 
     expect(loadByEmailSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
@@ -59,10 +62,7 @@ describe('DbAuthentication Usecase', () => {
       .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
       .mockReturnValueOnce(new Promise((resolve) => resolve(null)))
 
-    const accessToken = await sut.auth({
-      email: 'any_email@mail.com',
-      password: 'any_password'
-    })
+    const accessToken = await sut.auth(makeFakeAuthenticationData())
 
     expect(accessToken).toBeNull()
   })
