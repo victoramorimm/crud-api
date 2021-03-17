@@ -4,7 +4,8 @@ import {
   AuthenticationModel
 } from '../../../domain/usecases/authentication'
 import { InvalidParamError, MissingParamError, ServerError } from '../../errors'
-import { badRequest, serverError } from '../../helpers/http'
+import { AuthenticationError } from '../../errors/authentication-error'
+import { badRequest, serverError, unauthorized } from '../../helpers/http'
 import { EmailValidator } from '../../protocols'
 import { LoginController } from './login-controller'
 
@@ -154,5 +155,24 @@ describe('Login Controller', () => {
       email: 'any_email@mail.com',
       password: 'any_password'
     })
+  })
+
+  test('Should return 401 if Authentication returns null', async () => {
+    const { sut, authenticationStub } = makeSut()
+
+    jest
+      .spyOn(authenticationStub, 'auth')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(null)))
+
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(unauthorized(new AuthenticationError()))
   })
 })
