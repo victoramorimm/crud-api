@@ -4,6 +4,13 @@ import { AccountMongoRepository } from './account-mongo-repository'
 
 let accountCollection: Collection
 
+const makeInsertAccountOnInMemoryDb = async (): Promise<any> => {
+  return await accountCollection.insertOne({
+    email: 'any_email@mail.com',
+    password: 'hashed_password'
+  })
+}
+
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -23,10 +30,7 @@ describe('Account Mongo Repository', () => {
     test('Should return an account on loadByEmail success', async () => {
       const sut = new AccountMongoRepository()
 
-      await accountCollection.insertOne({
-        email: 'any_email@mail.com',
-        password: 'hashed_password'
-      })
+      await makeInsertAccountOnInMemoryDb()
 
       const account = await sut.loadByEmail('any_email@mail.com')
 
@@ -65,10 +69,7 @@ describe('Account Mongo Repository', () => {
     test('Should update the account accessToken on updateAccessToken success', async () => {
       const sut = new AccountMongoRepository()
 
-      const result = await accountCollection.insertOne({
-        email: 'any_email@mail.com',
-        password: 'hashed_password'
-      })
+      const result = await makeInsertAccountOnInMemoryDb()
 
       const accountReturnedByDb = result.ops[0]
 
