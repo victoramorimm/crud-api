@@ -73,12 +73,12 @@ describe('Bcrypt Adapter', () => {
         .spyOn(bcrypt, 'compare')
         .mockReturnValueOnce(new Promise((resolve) => resolve(false)))
 
-      const isPasswordValid = await sut.compare({
+      const isValueValid = await sut.compare({
         value: 'any_value',
         valueToCompare: 'hashed_value'
       })
 
-      expect(isPasswordValid).toBeFalsy()
+      expect(isValueValid).toBeFalsy()
     })
   })
 })
