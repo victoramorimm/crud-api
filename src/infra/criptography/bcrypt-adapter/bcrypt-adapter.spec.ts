@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import { HashComparerModel } from '../../../data/protocols/criptography/hash-comparer'
 import { BcryptAdapter } from './bcrypt-adapter'
 
 jest.mock('bcrypt', () => ({
@@ -10,6 +11,11 @@ jest.mock('bcrypt', () => ({
     return await new Promise((resolve) => resolve(true))
   }
 }))
+
+export const makeFakeDataToCompare = (): HashComparerModel => ({
+  value: 'any_value',
+  valueToCompare: 'hashed_value'
+})
 
 const salt = 12
 
@@ -58,10 +64,7 @@ describe('Bcrypt Adapter', () => {
 
       const compareSpy = jest.spyOn(bcrypt, 'compare')
 
-      await sut.compare({
-        value: 'any_value',
-        valueToCompare: 'hashed_value'
-      })
+      await sut.compare(makeFakeDataToCompare())
 
       expect(compareSpy).toHaveBeenCalledWith('any_value', 'hashed_value')
     })
@@ -73,10 +76,7 @@ describe('Bcrypt Adapter', () => {
         .spyOn(bcrypt, 'compare')
         .mockReturnValueOnce(new Promise((resolve) => resolve(false)))
 
-      const isValueValid = await sut.compare({
-        value: 'any_value',
-        valueToCompare: 'hashed_value'
-      })
+      const isValueValid = await sut.compare(makeFakeDataToCompare())
 
       expect(isValueValid).toBeFalsy()
     })
@@ -90,10 +90,7 @@ describe('Bcrypt Adapter', () => {
           new Promise((resolve, reject) => reject(new Error()))
         )
 
-      const isValueValid = sut.compare({
-        value: 'any_value',
-        valueToCompare: 'hashed_value'
-      })
+      const isValueValid = sut.compare(makeFakeDataToCompare())
 
       await expect(isValueValid).rejects.toThrow()
     })
