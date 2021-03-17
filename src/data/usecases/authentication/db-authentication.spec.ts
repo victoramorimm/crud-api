@@ -5,16 +5,21 @@ import {
 } from '../signup/db-add-account-protocols'
 import { DbAuthentication } from './db-authentication'
 
-const makeFakeAccountReturnedByDb = (): AccountReturnedByDbModel => ({
-  id: 'any_id',
-  email: 'any_email@mail.com',
-  password: 'hashed_password'
-})
-
 const makeFakeAuthenticationData = (): AuthenticationModel => ({
   email: 'any_email@mail.com',
   password: 'any_password'
 })
+
+const makeLoadAccountByEmailRepositoryStub = (): LoadAccountByEmailRepository => {
+  class LoadAccountByEmailRepositoryStub
+    implements LoadAccountByEmailRepository {
+    async loadByEmail(email: string): Promise<AccountReturnedByDbModel> {
+      return await new Promise((resolve) => resolve(null))
+    }
+  }
+
+  return new LoadAccountByEmailRepositoryStub()
+}
 
 type SutTypes = {
   sut: DbAuthentication
@@ -22,16 +27,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  class LoadAccountByEmailRepositoryStub
-    implements LoadAccountByEmailRepository {
-    async loadByEmail(email: string): Promise<AccountReturnedByDbModel> {
-      return await new Promise((resolve) =>
-        resolve(makeFakeAccountReturnedByDb())
-      )
-    }
-  }
-
-  const loadAccountByEmailRepositoryStub = new LoadAccountByEmailRepositoryStub()
+  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepositoryStub()
 
   const sut = new DbAuthentication(loadAccountByEmailRepositoryStub)
 
