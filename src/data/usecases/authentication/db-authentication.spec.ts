@@ -10,11 +10,19 @@ const makeFakeAuthenticationData = (): AuthenticationModel => ({
   password: 'any_password'
 })
 
+const makeFakeAccountReturnedByDb = (): AccountReturnedByDbModel => ({
+  id: 'any_id',
+  email: 'any_email@mail.com',
+  password: 'hashed_password'
+})
+
 const makeLoadAccountByEmailRepositoryStub = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub
     implements LoadAccountByEmailRepository {
     async loadByEmail(email: string): Promise<AccountReturnedByDbModel> {
-      return await new Promise((resolve) => resolve(null))
+      return await new Promise((resolve) =>
+        resolve(makeFakeAccountReturnedByDb())
+      )
     }
   }
 
