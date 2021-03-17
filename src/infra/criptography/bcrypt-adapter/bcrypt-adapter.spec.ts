@@ -81,6 +81,14 @@ describe('Bcrypt Adapter', () => {
       expect(isValueValid).toBeFalsy()
     })
 
+    test('Should return true if compare returns true', async () => {
+      const sut = makeSut()
+
+      const isValueValid = await sut.compare(makeFakeDataToCompare())
+
+      expect(isValueValid).toBeTruthy()
+    })
+
     test('Should throw if compare throws', async () => {
       const sut = makeSut()
 
