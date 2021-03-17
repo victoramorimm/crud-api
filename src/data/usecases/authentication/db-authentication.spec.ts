@@ -56,12 +56,8 @@ const makeEncrypterStub = (): Encrypter => {
 
 const makeUpdateAccessTokenRepositoryStub = (): UpdateAccessTokenRepository => {
   class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
-    async updateAccessToken(
-      data: UpdateAccessTokenModel
-    ): Promise<AccountReturnedByDbModel> {
-      return await new Promise((resolve) =>
-        resolve(makeFakeAccountReturnedByDb())
-      )
+    async updateAccessToken(data: UpdateAccessTokenModel): Promise<void> {
+      return await new Promise((resolve) => resolve())
     }
   }
 
