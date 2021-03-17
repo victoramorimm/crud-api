@@ -219,4 +219,18 @@ describe('DbAuthentication Usecase', () => {
       id: 'any_id'
     })
   })
+
+  test('Should throw if UpdateAccessTokenRepository throws', async () => {
+    const { sut, updateAccessTokenRepositoryStub } = makeSut()
+
+    jest
+      .spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken')
+      .mockImplementationOnce(() => {
+        throw new Error()
+      })
+
+    const account = sut.auth(makeFakeAuthenticationData())
+
+    await expect(account).rejects.toThrow()
+  })
 })
