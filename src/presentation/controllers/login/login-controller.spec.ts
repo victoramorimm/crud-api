@@ -5,8 +5,15 @@ import {
 import { InvalidParamError, MissingParamError, ServerError } from '../../errors'
 import { AuthenticationError } from '../../errors/authentication-error'
 import { badRequest, ok, serverError, unauthorized } from '../../helpers/http'
-import { EmailValidator } from '../../protocols'
+import { EmailValidator, HttpRequest } from '../../protocols'
 import { LoginController } from './login-controller'
+
+const makeFakeHttpRequest = (): HttpRequest => ({
+  body: {
+    email: 'any_email@mail.com',
+    password: 'any_password'
+  }
+})
 
 const makeEmailValidatorStub = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -82,12 +89,7 @@ describe('Login Controller', () => {
 
     const validateSpy = jest.spyOn(emailValidatorStub, 'validate')
 
-    const httpRequest = {
-      body: {
-        email: 'any_email@mail.com',
-        password: 'any_password'
-      }
-    }
+    const httpRequest = makeFakeHttpRequest()
 
     await sut.handle(httpRequest)
 
@@ -99,12 +101,7 @@ describe('Login Controller', () => {
 
     jest.spyOn(emailValidatorStub, 'validate').mockReturnValueOnce(false)
 
-    const httpRequest = {
-      body: {
-        email: 'any_email@mail.com',
-        password: 'any_password'
-      }
-    }
+    const httpRequest = makeFakeHttpRequest()
 
     const httpResponse = await sut.handle(httpRequest)
 
@@ -118,12 +115,7 @@ describe('Login Controller', () => {
       throw new Error()
     })
 
-    const httpRequest = {
-      body: {
-        email: 'any_email@mail.com',
-        password: 'any_password'
-      }
-    }
+    const httpRequest = makeFakeHttpRequest()
 
     const httpResponse = await sut.handle(httpRequest)
 
@@ -135,12 +127,7 @@ describe('Login Controller', () => {
 
     const authSpy = jest.spyOn(authenticationStub, 'auth')
 
-    const httpRequest = {
-      body: {
-        email: 'any_email@mail.com',
-        password: 'any_password'
-      }
-    }
+    const httpRequest = makeFakeHttpRequest()
 
     await sut.handle(httpRequest)
 
@@ -157,12 +144,7 @@ describe('Login Controller', () => {
       .spyOn(authenticationStub, 'auth')
       .mockReturnValueOnce(new Promise((resolve) => resolve(null)))
 
-    const httpRequest = {
-      body: {
-        email: 'any_email@mail.com',
-        password: 'any_password'
-      }
-    }
+    const httpRequest = makeFakeHttpRequest()
 
     const httpResponse = await sut.handle(httpRequest)
 
@@ -176,12 +158,7 @@ describe('Login Controller', () => {
       throw new Error()
     })
 
-    const httpRequest = {
-      body: {
-        email: 'any_email@mail.com',
-        password: 'any_password'
-      }
-    }
+    const httpRequest = makeFakeHttpRequest()
 
     const httpResponse = await sut.handle(httpRequest)
 
@@ -191,12 +168,7 @@ describe('Login Controller', () => {
   test('Should return 200 on success', async () => {
     const { sut } = makeSut()
 
-    const httpRequest = {
-      body: {
-        email: 'any_email@mail.com',
-        password: 'any_password'
-      }
-    }
+    const httpRequest = makeFakeHttpRequest()
 
     const httpResponse = await sut.handle(httpRequest)
 
